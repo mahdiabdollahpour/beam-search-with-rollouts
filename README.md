@@ -40,7 +40,7 @@ pip install -e .
 ## Example
 check out the [demo](demo.py).
 
-Warning: the example includes toxic content.
+**Warning**: the example includes toxic content.
 
 ```
 from transformers import OPTForCausalLM , AutoTokenizer
