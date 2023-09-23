@@ -74,13 +74,15 @@ beam_output =  model.generate(input_ids,attention_mask=attention_mask, max_lengt
 do_sample=False,num_beams=5,num_return_sequences=1, output_scores=True,return_dict_in_generate=True)
 
 texts = tokenizer.batch_decode(beam_output['sequences'], skip_special_tokens=True)
-
-continuations = [tt[input_len:] for tt in texts]
-
-
+```
+Use a toxicity classifier as the rollout scorer:
+```
 # define rollout scorer using a toxicity classifier
 rollout_scorer = ClassifierRolloutScorer(clf_name='s-nlp/roberta_toxicity_classifier',model_tokenizer_name=tokenizer_name,label=0,sharp=False)
+```
 
+See the results for vanilla beam search:
+```
 scores = rollout_scorer.classifier.get_scores(texts)
 
 for s,t in zip(scores,texts):
@@ -103,7 +105,6 @@ do_sample=False,num_beams=5,num_return_sequences=1, output_scores=True,return_di
 
 
 texts = tokenizer.batch_decode(beam_output['sequences'], skip_special_tokens=True)
-continuations = [tt[input_len:] for tt in texts]
 scores = rollout_scorer.classifier.get_scores(texts)
 
 for s,t in zip(scores,texts):
