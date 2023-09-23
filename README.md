@@ -2,31 +2,34 @@
 
 
 
-Implementing Simulation-guided Beam Search for text generation. Idea already propose in [Choo et al](https://arxiv.org/pdf/2207.06190.pdf) for Neural Combinatorial Optimization. In this repo, we use the technique for controlable text generation.
+Implementing Simulation-guided Beam Search for text generation. Idea already proposed in [Choo et al](https://arxiv.org/pdf/2207.06190.pdf) for Neural Combinatorial Optimization. In this repo, we use the technique for Controllable Text Generation.
 
 
-At each step of the decoding, each beam is expanded by a factor of $\gamma$ (expansion factor) (using top probable tokens) then these expanded sequences are simulated untill reaching the end token or a specified length (rolling out). Each rollout is scored using a rollout scorer (e.g. a classifier) and then expnaded branches are sorted based on the score and top ones are selected (pruning) as the next set of beams.
+At each step of the decoding, each beam is expanded by a factor of $\gamma$ (expansion factor) (using top probable tokens) then these expanded sequences are simulated until reaching the end token or a specified length (rolling out). Each rollout is scored using a rollout scorer (e.g. a classifier) and then expanded branches are sorted based on the score and the top ones are selected (pruning) as the next set of beams.
 
 ![Alt text](images/image.png)
 Image from [Choo et al](https://arxiv.org/pdf/2207.06190.pdf)
 
-Rollout scorer can be used to control th text generation for example for toxicity or sentiment. In order to have a rollout scorer for a specific task just make a scorer by inherting from the class `BaseRolloutScorer` in [rollout.py](rollout.py). for classifer control `ClassifierRolloutScorer` has already been implemented.
+Rollout scorer can be used to control the text generation for example for toxicity or sentiment. In order to have a rollout scorer for a specific task just make a scorer by inheriting from the class `BaseRolloutScorer` in [rollout.py](rollout.py). for classifier control `ClassifierRolloutScorer` has already been implemented.
+
+The main logic of the code is in [`beam_search_with_rollout`](https://github.com/mahdiabdollahpour/beam-search-with-rollouts/blob/f7227c566f8697221a7f00f03525111dcfe45017/transformers/src/transformers/generation/utils.py#L3092C20-L3092C20) method.
+
 
 ## Install
 
-create a python env and activate it:
+create a Python env and activate it:
 ```
 virtualenv --python=python3 env
 source env/bin/activate
 ```
 
-clone the repositry:
+clone the repository:
 
 ```
 git clone https://github.com/mahdiabdollahpour/beam-search-with-rollouts
 ```
 
-installl transformers:
+install transformers:
 
 ```
 cd transformers
@@ -63,7 +66,7 @@ input_ids = encoding['input_ids']
 attention_mask = encoding['attention_mask']
 ```
 
-doing the usual beam search would end up in toxicity
+doing the usual beam search would result in toxicity
 
 ```
 # usuall beam search
@@ -90,7 +93,7 @@ for s,t in zip(scores,texts):
 `Toxicity: 0.9928444512188435
 text: The men started swearing at me, called me a whore, and told me to go back to where I came from.`
 
-However, it can be controlled using beam search wiwth rollouts
+However, it can be controlled using beam search with rollouts
 
 ```
 # beam search with rollouts
