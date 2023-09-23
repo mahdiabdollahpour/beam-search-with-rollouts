@@ -119,6 +119,8 @@ I was scared, but I didn't know what to`
 
 
 
+## Future Work
+Rollout simulations are expensive to perform. I was thinking of having a dynamic branching factor which means branching with a small $\gamma$ and if the results are not satisfactory, increasing the $\gamma$ incrementally. Let me know if you are interested in extending this project.
 
 
 
